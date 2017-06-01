@@ -1,0 +1,20 @@
+package DAO;
+
+import java.util.ArrayList;
+
+public interface ITableDataDAO
+{
+    public int[] getSumResult( ArrayList<int[]> number);
+
+    public int[] getNumberOrder(int startDate);
+    
+    public int[] getRowByMutipleTwo(int[] sumResult);
+    
+    public int[] getRowByMinusSeven(int[] sumResult);
+    
+    public int[] getRowEight(int[] rowFive, int[] rowSeven);
+
+    public int[] getRowNine(int[] rowFive, int[] rowSeven);
+    
+    public int getIndex(int[] rowArray, int number);
+}

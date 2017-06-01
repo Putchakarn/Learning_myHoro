@@ -1,0 +1,77 @@
+package service;
+
+import java.util.ArrayList;
+
+import DAO.ITableDataDAO;
+import DAO.TableDataDAO;
+
+public class TableDataService implements ITableDataService
+{
+    private ArrayList<int[]> numberList = new ArrayList<int[]>();
+    private ITableDataDAO dao = new TableDataDAO();
+    private int[] result, dateArray;
+    private int[] dataRowNumber = new int[7];
+
+    @Override
+    public int[] getNumberOrder(int startDate)
+    {
+        dateArray = dao.getNumberOrder(startDate);
+        return dateArray;
+    }
+
+    @Override
+    public int[] getSumResult(ArrayList<int[]> numberList)
+    {
+        result = dao.getSumResult(numberList);
+        return result;
+    }
+
+    @Override
+    public int[] getRowByMutipleTwo(int[] sumResult)
+    {
+        dataRowNumber = dao.getRowByMutipleTwo(sumResult);
+        return dataRowNumber;
+    }
+
+    @Override
+    public int[] getRowByMinusSeven(int[] sumResult)
+    {
+        dataRowNumber = dao.getRowByMinusSeven(sumResult);
+        return dataRowNumber;
+    }
+
+    @Override
+    public int[] getRowEight(int[] rowFive, int[] rowSeven)
+    {
+        dataRowNumber = dao.getRowEight(rowFive, rowSeven);
+        return dataRowNumber;
+    }
+
+    @Override
+    public int[] getRowNine(int[] rowSeven, int[] rowEight)
+    {
+        dataRowNumber = dao.getRowNine(rowSeven, rowEight);
+        return dataRowNumber;
+    }
+
+    @Override
+    public ArrayList<int[]> getTableResult(int date, int month, int year)
+    {
+        // Line 1 - 3
+        numberList.add(getNumberOrder(date));
+        numberList.add(getNumberOrder(month));
+        numberList.add(getNumberOrder(year));
+        // Line 4 sum of three line
+        numberList.add(getSumResult(numberList));
+        // Line 5 (sum - 7)
+        numberList.add(getRowByMinusSeven(numberList.get(3)));
+        // Line 6 - 7 ((sum * 2) <= 7)
+        numberList.add(getRowByMutipleTwo(numberList.get(4)));
+        numberList.add(getRowByMutipleTwo(numberList.get(5)));
+        // Line 8
+        numberList.add(getRowEight(numberList.get(4), numberList.get(6)));
+        // Line 9
+        numberList.add(getRowNine(numberList.get(4), numberList.get(7)));
+        return numberList;
+    }
+}

@@ -1,0 +1,20 @@
+package service;
+
+import java.util.ArrayList;
+
+public interface ITableDataService
+{
+    public ArrayList<int[]> getTableResult(int date, int month, int year);
+
+    public int[] getSumResult(ArrayList<int[]> numberList);
+
+    public int[] getNumberOrder(int startDate);
+    
+    public int[] getRowByMutipleTwo(int[] sumResult);
+    
+    public int[] getRowByMinusSeven(int[] sumResult);
+    
+    public int[] getRowEight(int[] rowFive, int[] rowSeven);
+    
+    public int[] getRowNine(int[] rowSeven, int[] rowEight);
+}

@@ -1,0 +1,178 @@
+package DAO;
+
+import java.util.ArrayList;
+
+public class TableDataDAO implements ITableDataDAO
+{
+    private int sizeOfData = 7;
+    private int sumLine = 3;
+    private int modNumber = 7;
+    private int remainIndex = 6;
+    private int INDEX_SIX = 6;
+    private int INDEX_FIVE = 5;
+    private int NUMBER_ONE = 1;
+    private int dataResult = 0;
+    int[] dataRowNine = new int[sizeOfData];
+    int[] dataRowEight = new int[sizeOfData];
+
+    @Override
+    public int[] getNumberOrder(int startDate)
+    {
+        int[] mainDataArray = new int[sizeOfData];
+        for(int i = 0; i < mainDataArray.length; i++)
+        {
+            if(i == 0)
+            {
+                mainDataArray[i] = startDate;
+            }
+            else if(startDate <= mainDataArray.length && mainDataArray[i - NUMBER_ONE] != sizeOfData)
+            {
+                mainDataArray[i] = mainDataArray[i - NUMBER_ONE] + NUMBER_ONE;
+            }
+            else
+            {
+                mainDataArray[i] = mainDataArray[i - NUMBER_ONE] - (sizeOfData - NUMBER_ONE);
+            }
+        }
+        return mainDataArray;
+    }
+
+    @Override
+    public int[] getSumResult(ArrayList<int[]> numberList)
+    {
+        int sumDate = 0;
+        int[] result = new int[sizeOfData];
+        for(int i = 0; i < result.length; i++)
+        {
+            for(int j = 0; j < sumLine; j++)
+            {
+                sumDate = sumDate + numberList.get(j)[i];
+            }
+            result[i] = sumDate;
+            sumDate = 0;
+        }
+        return result;
+    }
+
+    @Override
+    public int[] getRowByMutipleTwo(int[] sumResult)
+    {
+        int dataResult = 0;
+        int[] dataRowNumber = new int[sizeOfData];
+        for(int i = 0; i < sumResult.length; i++)
+        {
+            dataResult = (sumResult[i] * 2) % modNumber;
+            if(dataResult == 0)
+            {
+                dataResult = sizeOfData;
+            }
+            dataRowNumber[i] = (dataResult);
+        }
+        return dataRowNumber;
+    }
+
+    @Override
+    public int[] getRowByMinusSeven(int[] sumResult)
+    {
+        int[] dataRowNumber = new int[sizeOfData];
+        for(int i = 0; i < sumResult.length; i++)
+        {
+            if(sumResult[i] > sizeOfData && (sumResult[i] % modNumber) != 0)
+            {
+                dataResult = sumResult[i] % modNumber;
+            }
+            else if((sumResult[i] % modNumber) == 0)
+            {
+                dataResult = 7;
+            }
+            else
+            {
+                dataResult = sumResult[i];
+            }
+            dataRowNumber[i] = (dataResult);
+        }
+        return dataRowNumber;
+    }
+
+    @Override
+    public int[] getRowEight(int[] rowFive, int[] rowSeven)
+    {
+        int a = 0;
+        dataRowEight[0] = rowFive[0];
+        int index = getIndex(rowSeven, dataRowEight[0]);
+        dataRowEight[0] = rowSeven[index];
+        for(int i = 1; i <= remainIndex; i++)
+        {
+            if((index + i) < 7)
+            {
+                dataRowEight[i] = rowSeven[index + i];
+            }
+            else if(i == 6)
+            {
+                dataRowEight[i] = rowSeven[index - 1];
+            }
+            else
+            {
+                dataRowEight[i] = rowSeven[a];
+                a++;
+            }
+        }
+        return dataRowEight;
+    }
+
+    @Override
+    public int[] getRowNine(int[] rowSeven, int[] rowEight)
+    {
+        int index = 0;
+        int countBack = 1;
+        int countFront = 0;
+        int lastNumber = rowEight[INDEX_SIX] + rowEight[INDEX_FIVE];
+        if(lastNumber > sizeOfData)
+        {
+            lastNumber = lastNumber - sizeOfData;
+            dataRowNine[INDEX_SIX] = lastNumber;
+        }
+        else
+        {
+            dataRowNine[INDEX_SIX] = lastNumber;
+        }
+        index = getIndex(rowEight, lastNumber);
+        
+        for(int i = 5; i >= 0; i--)
+        {
+            if((countBack + index) < 7)
+            {
+                dataRowNine[i] = rowEight[index + countBack];
+                countBack++;
+            }
+            else if(countBack == 6)
+            {
+                dataRowNine[i] = rowEight[countFront];
+                countFront++;
+            }
+            else
+            {
+                dataRowNine[i] = rowEight[countFront];
+                countFront++;
+            }
+            System.out.println("i= " + i + "  " + dataRowNine[i]);
+        }
+        
+        return dataRowNine;
+    }
+
+    @Override
+    public int getIndex(int[] rowArray, int number)
+    {
+        int indexNumber = 0;
+        for(int i = 0; i <= remainIndex; i++)
+        {
+            if(rowArray[i] == number)
+            {
+                indexNumber = i;
+                break;
+            }
+        }
+        return indexNumber;
+    }
+}
